@@ -2,11 +2,14 @@ package com.mentor.safetynetalerts.repositories;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import org.springframework.stereotype.Repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mentor.safetynetalerts.models.Database;
+import com.mentor.safetynetalerts.models.Person;
 
 @Repository
 public class DataRepository {
@@ -24,9 +27,22 @@ public class DataRepository {
 		database = objectMapper.readerFor(Database.class).readValue(inputStream);
 	}
 	
-	public static void main(String[] args) throws IOException {
-		DataRepository dataRepository = new DataRepository();
-		System.out.println(dataRepository.database.getPersons().size());
+	//Méthode pour recuperer les Persons
+	public Collection<Person> getPersonsByCity(String city){
+		Collection<Person> collectionPersons = new ArrayList<Person>();
+		for (Person person : database.getPersons()) {
+			if (person.getCity().equalsIgnoreCase(city)) {
+				collectionPersons.add(person);
+			}
+		}
+		return collectionPersons;
 	}
+	
+	
+//	On test notre mappeur
+//	public static void main(String[] args) throws IOException {
+//		DataRepository dataRepository = new DataRepository();
+//		System.out.println(dataRepository.database.getPersons().size());
+//	}
 
 }
